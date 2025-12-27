@@ -1,36 +1,142 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# David's Personal Blog
+
+A personal blog platform built with Next.js 14, TypeScript, Tailwind CSS, and Contentful CMS.
+
+## Features
+
+- **Blog** - Posts with tag filtering, pagination, and social sharing
+- **Art Gallery** - Responsive grid with lightbox functionality
+- **Resume** - Two-column layout with skills and experience
+- **Newsletter** - Beehiiv integration for subscriber management
+- **SEO** - OpenGraph, Twitter cards, and RSS feed
+- **Analytics** - Google Analytics 4 integration
+- **On-demand ISR** - Contentful webhook for instant updates
+
+## Tech Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **CMS**: Contentful
+- **Code Highlighting**: Prism.js
+- **Hosting**: Vercel
+- **Newsletter**: Beehiiv
 
 ## Getting Started
 
-First, run the development server:
+### 1. Clone and Install
+
+```bash
+cd /Users/davidtownsend/projects/my_blog_v4
+npm install
+```
+
+### 2. Environment Variables
+
+Copy `.env.local.example` to `.env.local` and fill in your values:
+
+```bash
+cp .env.local.example .env.local
+```
+
+Required variables:
+- `CONTENTFUL_SPACE_ID` - Your Contentful space ID
+- `CONTENTFUL_ACCESS_TOKEN` - Content Delivery API token
+- `CONTENTFUL_PREVIEW_TOKEN` - Content Preview API token
+- `NEXT_PUBLIC_SITE_URL` - Your production URL
+- `NEXT_PUBLIC_GA_MEASUREMENT_ID` - Google Analytics ID
+
+### 3. Set Up Contentful
+
+Create the following content types in Contentful:
+
+**Post**
+- `title` (Short text)
+- `slug` (Short text, unique)
+- `body` (Rich text)
+- `excerpt` (Short text)
+- `featuredImage` (Media)
+- `tags` (Short text, list)
+- `publishDate` (Date & time)
+- `status` (Short text: draft/published)
+
+**Artwork**
+- `title` (Short text)
+- `image` (Media, required)
+- `description` (Long text)
+- `medium` (Short text)
+- `createdDate` (Date & time)
+- `tags` (Short text, list)
+
+**ResumeItem**
+- `companyName` (Short text)
+- `companyLogo` (Media)
+- `role` (Short text)
+- `location` (Short text)
+- `startDate` (Date & time)
+- `endDate` (Date & time)
+- `descriptionBullets` (Short text, list)
+- `type` (Short text: work/education)
+
+**Skill**
+- `name` (Short text)
+- `category` (Short text: Languages/Frameworks/Tools/Software)
+
+### 4. Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 5. Set Up Contentful Webhook (Production)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Add a webhook in Contentful pointing to:
+```
+https://yourdomain.com/api/revalidate
+```
 
-## Learn More
+Add header: `x-revalidate-secret: YOUR_SECRET`
 
-To learn more about Next.js, take a look at the following resources:
+Set `CONTENTFUL_REVALIDATE_SECRET` in your environment.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/
+│   ├── api/           # API routes
+│   ├── blog/          # Blog pages
+│   ├── art/           # Art gallery
+│   ├── resume/        # Resume page
+│   ├── about/         # About page
+│   ├── subscribe/     # Newsletter signup
+│   └── feed.xml/      # RSS feed
+├── components/
+│   ├── layout/        # Header, Footer
+│   ├── blog/          # Blog components
+│   ├── art/           # Gallery components
+│   ├── resume/        # Resume components
+│   ├── shared/        # Shared components
+│   └── analytics/     # GA component
+└── lib/
+    ├── contentful.ts  # CMS client
+    ├── constants.ts   # Site config
+    ├── types.ts       # TypeScript types
+    └── utils.ts       # Utilities
+```
 
-## Deploy on Vercel
+## Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Deploy to Vercel:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run build
+```
+
+Or connect your GitHub repo to Vercel for automatic deployments.
+
+## License
+
+All rights reserved.
