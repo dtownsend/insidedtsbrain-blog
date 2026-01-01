@@ -112,6 +112,18 @@ export interface SkillEntry {
   };
 }
 
+export interface ProfileEntry {
+  sys: { id: string };
+  fields: {
+    name: string;
+    title?: string;
+    bio?: string;
+    location?: string;
+    profilePicture?: ContentfulAsset;
+    resumePdf?: ContentfulAsset;
+  };
+}
+
 // Fetch functions
 export async function getPosts(
   preview = false,
@@ -244,4 +256,17 @@ export async function getAllTags(): Promise<string[]> {
     (item) => (item.fields as { tags?: string[] }).tags || []
   );
   return Array.from(new Set(allTags));
+}
+
+export async function getProfile(preview = false): Promise<ProfileEntry | null> {
+  const client = getClient(preview);
+
+  const query: Record<string, unknown> = {
+    content_type: 'profile',
+    limit: 1,
+  };
+
+  const response = await client.getEntries(query);
+
+  return (response.items[0] as unknown as ProfileEntry) || null;
 }

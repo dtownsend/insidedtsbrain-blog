@@ -1,14 +1,17 @@
 import { format, parseISO } from 'date-fns';
 
-export function formatDate(dateString: string, formatStr = 'MMMM d, yyyy'): string {
+export function formatDate(dateString: string | undefined, formatStr = 'MMMM d, yyyy'): string {
+  if (!dateString) return '';
   return format(parseISO(dateString), formatStr);
 }
 
-export function formatYear(dateString: string): string {
+export function formatYear(dateString: string | undefined): string {
+  if (!dateString) return '';
   return format(parseISO(dateString), 'yyyy');
 }
 
-export function formatMonthYear(dateString: string): string {
+export function formatMonthYear(dateString: string | undefined): string {
+  if (!dateString) return '';
   return format(parseISO(dateString), 'MMM yyyy');
 }
 
