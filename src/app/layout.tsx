@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import { SITE_CONFIG } from '@/lib/constants';
 import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
 
@@ -42,11 +40,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} antialiased bg-white text-gray-900`}>
         <GoogleAnalytics />
-        <div className="flex flex-col min-h-screen">
-          <Header />
-          <main className="flex-1 pt-16">{children}</main>
-          <Footer />
-        </div>
+        {children}
       </body>
     </html>
   );
