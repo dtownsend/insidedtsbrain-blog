@@ -44,9 +44,13 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         </div>
       ) : (
         <>
-          <div className="space-y-12">
-            {posts.map((post) => (
-              <PostCard key={post.sys.id} post={post} />
+          <div className="space-y-8">
+            {posts.map((post, index) => (
+              <PostCard 
+                key={post.sys.id} 
+                post={post} 
+                imagePosition={index === 0 && currentPage === 1 ? 'left' : 'right'} 
+              />
             ))}
           </div>
 

@@ -60,13 +60,13 @@ export default function RichTextRenderer({ content }: RichTextRendererProps) {
         <h6 className="text-sm font-bold mt-4 mb-2 text-gray-900">{children}</h6>
       ),
       [BLOCKS.UL_LIST]: (node, children) => (
-        <ul className="list-disc list-inside mb-4 space-y-2 text-gray-700">{children}</ul>
+        <ul className="list-disc pl-6 mb-4 space-y-1 text-gray-700">{children}</ul>
       ),
       [BLOCKS.OL_LIST]: (node, children) => (
-        <ol className="list-decimal list-inside mb-4 space-y-2 text-gray-700">{children}</ol>
+        <ol className="list-decimal pl-6 mb-4 space-y-1 text-gray-700">{children}</ol>
       ),
       [BLOCKS.LIST_ITEM]: (node, children) => (
-        <li className="leading-relaxed">{children}</li>
+        <li className="leading-relaxed [&>p]:inline [&>p]:mb-0">{children}</li>
       ),
       [BLOCKS.QUOTE]: (node, children) => (
         <blockquote className="border-l-4 border-gray-300 pl-4 my-4 italic text-gray-600">

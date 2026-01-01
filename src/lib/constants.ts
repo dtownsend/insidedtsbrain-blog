@@ -2,13 +2,13 @@ export const SITE_CONFIG = {
   name: 'David\'s Blog',
   title: 'David\'s Blog - Thoughts, Stories, and Art',
   description: 'A personal blog sharing thoughts, stories, ideas, projects, and artwork.',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com',
+  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://insidedtsbrain.com/',
   author: 'David',
   social: {
     twitter: 'https://twitter.com/yourusername',
     linkedin: 'https://linkedin.com/in/yourusername',
     bluesky: 'https://bsky.app/profile/yourusername',
-    email: 'hello@example.com',
+    email: 'dtownsend90@gmail.com',
   },
 };
 

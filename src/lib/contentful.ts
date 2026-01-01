@@ -124,6 +124,16 @@ export interface ProfileEntry {
   };
 }
 
+export interface AboutEntry {
+  sys: { id: string };
+  fields: {
+    headline: string;
+    introduction?: string;
+    story?: Document;
+    profilePicture?: ContentfulAsset;
+  };
+}
+
 // Fetch functions
 export async function getPosts(
   preview = false,
@@ -269,4 +279,17 @@ export async function getProfile(preview = false): Promise<ProfileEntry | null> 
   const response = await client.getEntries(query);
 
   return (response.items[0] as unknown as ProfileEntry) || null;
+}
+
+export async function getAbout(preview = false): Promise<AboutEntry | null> {
+  const client = getClient(preview);
+
+  const query: Record<string, unknown> = {
+    content_type: 'about',
+    limit: 1,
+  };
+
+  const response = await client.getEntries(query);
+
+  return (response.items[0] as unknown as AboutEntry) || null;
 }
