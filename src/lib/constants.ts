@@ -5,9 +5,9 @@ export const SITE_CONFIG = {
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://insidedtsbrain.com/',
   author: 'David',
   social: {
-    // twitter: 'https://twitter.com/yourusername',
+    twitter: '', // TODO: add when available
     linkedin: 'https://www.linkedin.com/in/dt90/',
-    // bluesky: 'https://bsky.app/profile/yourusername',
+    bluesky: '', // TODO: add when available
     email: 'dtownsend90@gmail.com',
   },
 };
