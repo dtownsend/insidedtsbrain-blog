@@ -1,12 +1,13 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import { HeadingNode, HeadingTreeNode, buildHeadingTree } from '@/lib/extract-headings';
 
 interface TableOfContentsProps {
   headings: HeadingNode[];
 }
 
-function renderTree(nodes: HeadingTreeNode[]): React.ReactNode {
+function renderTree(nodes: HeadingTreeNode[]): ReactNode {
   if (nodes.length === 0) return null;
   return (
     <ul className="list-disc pl-6 sm:pl-4 space-y-1 text-gray-700">
