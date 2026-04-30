@@ -4,6 +4,11 @@ import { documentToReactComponents, Options } from '@contentful/rich-text-react-
 import { BLOCKS, INLINES, MARKS, Document } from '@contentful/rich-text-types';
 import Image from 'next/image';
 import Link from 'next/link';
+import { slugify } from '@/lib/utils';
+import { getPlainText } from '@/lib/extract-headings';
+import GraphTree from '@/components/blog/GraphTree';
+import ImageGrid from '@/components/blog/ImageGrid';
+import { GraphTreeEntry, ImageGridEntry } from '@/lib/contentful';
 import { useEffect } from 'react';
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
@@ -45,13 +50,28 @@ export default function RichTextRenderer({ content }: RichTextRendererProps) {
         <h1 className="text-3xl font-bold mt-8 mb-4 text-gray-900">{children}</h1>
       ),
       [BLOCKS.HEADING_2]: (node, children) => (
-        <h2 className="text-2xl font-bold mt-8 mb-4 text-gray-900">{children}</h2>
+        <h2
+          id={slugify(getPlainText(node))}
+          className="text-2xl font-bold mt-8 mb-4 text-gray-900 scroll-mt-20"
+        >
+          {children}
+        </h2>
       ),
       [BLOCKS.HEADING_3]: (node, children) => (
-        <h3 className="text-xl font-bold mt-6 mb-3 text-gray-900">{children}</h3>
+        <h3
+          id={slugify(getPlainText(node))}
+          className="text-xl font-bold mt-6 mb-3 text-gray-900 scroll-mt-20"
+        >
+          {children}
+        </h3>
       ),
       [BLOCKS.HEADING_4]: (node, children) => (
-        <h4 className="text-lg font-bold mt-6 mb-3 text-gray-900">{children}</h4>
+        <h4
+          id={slugify(getPlainText(node))}
+          className="text-lg font-bold mt-6 mb-3 text-gray-900 scroll-mt-20"
+        >
+          {children}
+        </h4>
       ),
       [BLOCKS.HEADING_5]: (node, children) => (
         <h5 className="text-base font-bold mt-4 mb-2 text-gray-900">{children}</h5>
@@ -74,6 +94,33 @@ export default function RichTextRenderer({ content }: RichTextRendererProps) {
         </blockquote>
       ),
       [BLOCKS.HR]: () => <hr className="my-8 border-gray-200" />,
+      [BLOCKS.EMBEDDED_ENTRY]: (node) => {
+        const entry = node.data.target as { sys?: { contentType?: { sys?: { id?: string } } }; fields?: unknown };
+        const contentTypeId = entry?.sys?.contentType?.sys?.id;
+
+        switch (contentTypeId) {
+          case 'graphTree': {
+            const graphTree = entry as unknown as GraphTreeEntry;
+            return (
+              <GraphTree
+                title={graphTree.fields.title}
+                steps={graphTree.fields.steps}
+              />
+            );
+          }
+          case 'imageGrid': {
+            const imageGrid = entry as unknown as ImageGridEntry;
+            return (
+              <ImageGrid
+                columns={imageGrid.fields.columns}
+                items={imageGrid.fields.items}
+              />
+            );
+          }
+          default:
+            return null;
+        }
+      },
       [BLOCKS.EMBEDDED_ASSET]: (node) => {
         const { file, title } = node.data.target.fields;
         const { url, details } = file;

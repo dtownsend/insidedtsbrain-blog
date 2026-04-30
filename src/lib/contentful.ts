@@ -65,6 +65,7 @@ export interface PostEntry {
     tags: string[];
     publishDate: string;
     status: 'draft' | 'published';
+    showTableOfContents?: boolean;
   };
 }
 
@@ -134,6 +135,39 @@ export interface AboutEntry {
   };
 }
 
+export interface GraphTreeStepEntry {
+  sys: { id: string; contentType: { sys: { id: 'graphTreeStep' } } };
+  fields: {
+    label: string;
+    body?: string;
+  };
+}
+
+export interface GraphTreeEntry {
+  sys: { id: string; contentType: { sys: { id: 'graphTree' } } };
+  fields: {
+    title?: string;
+    steps: GraphTreeStepEntry[];
+  };
+}
+
+export interface ImageGridItemEntry {
+  sys: { id: string; contentType: { sys: { id: 'imageGridItem' } } };
+  fields: {
+    image: ContentfulAsset;
+    caption?: string;
+    alt?: string;
+  };
+}
+
+export interface ImageGridEntry {
+  sys: { id: string; contentType: { sys: { id: 'imageGrid' } } };
+  fields: {
+    columns: 2 | 3 | 4;
+    items: ImageGridItemEntry[];
+  };
+}
+
 // Fetch functions
 export async function getPosts(
   preview = false,
@@ -173,6 +207,7 @@ export async function getPostBySlug(
     content_type: 'post',
     'fields.slug': slug,
     limit: 1,
+    include: 3,
   };
 
   const response = await client.getEntries(query);
