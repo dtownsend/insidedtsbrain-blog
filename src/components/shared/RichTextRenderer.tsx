@@ -4,6 +4,8 @@ import { documentToReactComponents, Options } from '@contentful/rich-text-react-
 import { BLOCKS, INLINES, MARKS, Document } from '@contentful/rich-text-types';
 import Image from 'next/image';
 import Link from 'next/link';
+import { slugify } from '@/lib/utils';
+import { getPlainText } from '@/lib/extract-headings';
 import { useEffect } from 'react';
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
@@ -45,13 +47,28 @@ export default function RichTextRenderer({ content }: RichTextRendererProps) {
         <h1 className="text-3xl font-bold mt-8 mb-4 text-gray-900">{children}</h1>
       ),
       [BLOCKS.HEADING_2]: (node, children) => (
-        <h2 className="text-2xl font-bold mt-8 mb-4 text-gray-900">{children}</h2>
+        <h2
+          id={slugify(getPlainText(node))}
+          className="text-2xl font-bold mt-8 mb-4 text-gray-900 scroll-mt-20"
+        >
+          {children}
+        </h2>
       ),
       [BLOCKS.HEADING_3]: (node, children) => (
-        <h3 className="text-xl font-bold mt-6 mb-3 text-gray-900">{children}</h3>
+        <h3
+          id={slugify(getPlainText(node))}
+          className="text-xl font-bold mt-6 mb-3 text-gray-900 scroll-mt-20"
+        >
+          {children}
+        </h3>
       ),
       [BLOCKS.HEADING_4]: (node, children) => (
-        <h4 className="text-lg font-bold mt-6 mb-3 text-gray-900">{children}</h4>
+        <h4
+          id={slugify(getPlainText(node))}
+          className="text-lg font-bold mt-6 mb-3 text-gray-900 scroll-mt-20"
+        >
+          {children}
+        </h4>
       ),
       [BLOCKS.HEADING_5]: (node, children) => (
         <h5 className="text-base font-bold mt-4 mb-2 text-gray-900">{children}</h5>
