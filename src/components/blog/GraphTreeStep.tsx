@@ -42,7 +42,7 @@ export default function GraphTreeStep({ label, body, isLast }: GraphTreeStepProp
   if (!body) {
     return (
       <>
-        <div className="rounded border border-gray-200 bg-white px-3 py-2 text-gray-800">
+        <div className="rounded border border-gray-200 bg-white px-3 py-2 text-gray-800 text-center">
           {label}
         </div>
         {!isLast && <ArrowConnector />}
