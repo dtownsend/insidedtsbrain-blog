@@ -207,6 +207,7 @@ export async function getPostBySlug(
     content_type: 'post',
     'fields.slug': slug,
     limit: 1,
+    include: 3,
   };
 
   const response = await client.getEntries(query);
