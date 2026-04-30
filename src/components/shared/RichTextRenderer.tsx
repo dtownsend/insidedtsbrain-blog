@@ -6,6 +6,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { slugify } from '@/lib/utils';
 import { getPlainText } from '@/lib/extract-headings';
+import GraphTree from '@/components/blog/GraphTree';
+import ImageGrid from '@/components/blog/ImageGrid';
+import { GraphTreeEntry, ImageGridEntry } from '@/lib/contentful';
 import { useEffect } from 'react';
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
@@ -91,6 +94,33 @@ export default function RichTextRenderer({ content }: RichTextRendererProps) {
         </blockquote>
       ),
       [BLOCKS.HR]: () => <hr className="my-8 border-gray-200" />,
+      [BLOCKS.EMBEDDED_ENTRY]: (node) => {
+        const entry = node.data.target as { sys?: { contentType?: { sys?: { id?: string } } }; fields?: unknown };
+        const contentTypeId = entry?.sys?.contentType?.sys?.id;
+
+        switch (contentTypeId) {
+          case 'graphTree': {
+            const graphTree = entry as unknown as GraphTreeEntry;
+            return (
+              <GraphTree
+                title={graphTree.fields.title}
+                steps={graphTree.fields.steps}
+              />
+            );
+          }
+          case 'imageGrid': {
+            const imageGrid = entry as unknown as ImageGridEntry;
+            return (
+              <ImageGrid
+                columns={imageGrid.fields.columns}
+                items={imageGrid.fields.items}
+              />
+            );
+          }
+          default:
+            return null;
+        }
+      },
       [BLOCKS.EMBEDDED_ASSET]: (node) => {
         const { file, title } = node.data.target.fields;
         const { url, details } = file;
