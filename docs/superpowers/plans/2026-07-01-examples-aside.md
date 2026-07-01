@@ -380,7 +380,10 @@ Expected: all pass; the build completes with no type or lint errors and no refer
 - [ ] **Step 3: Commit**
 
 ```bash
-git add -A
+# Step 1's `git rm` already staged the deletion. Stage ONLY that file —
+# do NOT use `git add -A`, which would sweep unrelated working-tree changes
+# (e.g. someone else's in-progress work) into this feature commit.
+git add src/app/examples-preview/page.tsx
 git commit -m "$(cat <<'EOF'
 Remove temporary ExamplesAside preview route
 
