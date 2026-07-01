@@ -158,6 +158,33 @@ export interface ImageGridEntry {
   };
 }
 
+export type ExampleColor =
+  | 'pink'
+  | 'yellow'
+  | 'blue'
+  | 'green'
+  | 'purple'
+  | 'gray'
+  | 'none';
+
+export interface ExampleCardEntry {
+  sys: { id: string; contentType: { sys: { id: 'exampleCard' } } };
+  fields: {
+    title?: string;
+    body: Document;
+    backgroundColor?: ExampleColor;
+  };
+}
+
+export interface ExamplesAsideEntry {
+  sys: { id: string; contentType: { sys: { id: 'examplesAside' } } };
+  fields: {
+    title?: string;
+    side?: 'left' | 'right';
+    examples: ExampleCardEntry[];
+  };
+}
+
 // Fetch functions
 export async function getPosts(
   preview = false,
