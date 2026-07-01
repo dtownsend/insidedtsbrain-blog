@@ -10,7 +10,7 @@ import GraphTree from '@/components/blog/GraphTree';
 import ImageGrid from '@/components/blog/ImageGrid';
 import ExamplesAside from '@/components/blog/ExamplesAside';
 import { GraphTreeEntry, ImageGridEntry, ExamplesAsideEntry } from '@/lib/contentful';
-import { useEffect } from 'react';
+import { useEffect, Fragment, type ReactNode } from 'react';
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
 import 'prismjs/components/prism-javascript';
@@ -25,6 +25,42 @@ import 'prismjs/components/prism-markdown';
 
 interface RichTextRendererProps {
   content: Document;
+}
+
+type DocNode = Document['content'][number];
+
+// Wrap a single top-level node in a throwaway Document so it can be rendered on
+// its own with the shared options — lets us group specific siblings.
+function asDoc(node: DocNode): Document {
+  return { nodeType: BLOCKS.DOCUMENT, data: {}, content: [node] } as Document;
+}
+
+function isExamplesAsideNode(node: DocNode): boolean {
+  if (node.nodeType !== BLOCKS.EMBEDDED_ENTRY) return false;
+  const target = (node.data as {
+    target?: { sys?: { contentType?: { sys?: { id?: string } } } };
+  }).target;
+  return target?.sys?.contentType?.sys?.id === 'examplesAside';
+}
+
+// Pairs a paragraph with the ExamplesAside that follows it so the two share a
+// layout context. On desktop the wrappers collapse (display:contents), leaving
+// the aside floating in the article flow before the paragraph — so the text
+// wraps around it with no gap. On mobile the pair becomes a flex column and the
+// aside is reordered to sit after the paragraph.
+function ExamplesAsidePair({
+  paragraph,
+  aside,
+}: {
+  paragraph: ReactNode;
+  aside: ReactNode;
+}) {
+  return (
+    <div className="flex flex-col md:contents">
+      <div className="order-last md:contents">{aside}</div>
+      <div className="md:contents">{paragraph}</div>
+    </div>
+  );
 }
 
 export default function RichTextRenderer({ content }: RichTextRendererProps) {
@@ -180,9 +216,27 @@ export default function RichTextRenderer({ content }: RichTextRendererProps) {
     },
   };
 
-  return (
-    <div className="prose prose-lg max-w-none">
-      {documentToReactComponents(content, options)}
-    </div>
-  );
+  const nodes = content.content;
+  const rendered: ReactNode[] = [];
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i];
+    const next = nodes[i + 1];
+    // An ExamplesAside placed right after a paragraph pairs with that paragraph.
+    if (node.nodeType === BLOCKS.PARAGRAPH && next && isExamplesAsideNode(next)) {
+      rendered.push(
+        <ExamplesAsidePair
+          key={i}
+          paragraph={documentToReactComponents(asDoc(node), options)}
+          aside={documentToReactComponents(asDoc(next), options)}
+        />
+      );
+      i++; // skip the aside — it was consumed by the pair
+    } else {
+      rendered.push(
+        <Fragment key={i}>{documentToReactComponents(asDoc(node), options)}</Fragment>
+      );
+    }
+  }
+
+  return <div className="prose prose-lg max-w-none">{rendered}</div>;
 }

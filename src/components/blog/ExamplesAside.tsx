@@ -86,7 +86,7 @@ export default function ExamplesAside({ title, side, examples }: ExamplesAsidePr
 
   return (
     <aside
-      className={`float-none w-full my-6 md:w-72 md:mb-4 ${SIDE_CLASS[side]} rounded-lg border border-gray-200 bg-gray-50 px-4 py-3`}
+      className={`float-none w-full my-6 md:mt-0 md:w-72 md:mb-4 ${SIDE_CLASS[side]} rounded-lg border border-gray-200 bg-gray-50 px-4 py-3`}
     >
       {title && <p className="font-semibold text-gray-900 mb-2">{title}</p>}
       <div className="flex flex-col gap-2">
