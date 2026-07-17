@@ -1,9 +1,27 @@
-![Playwright Tests](https://github.com/dtownsend/my_blog_v4_wAI/actions/workflows/playwright.yml/badge.svg)
-
+[![Playwright Tests](https://github.com/dtownsend/my_blog_v4_wAI/actions/workflows/playwright.yml/badge.svg)](https://github.com/dtownsend/my_blog_v4_wAI/actions/workflows/playwright.yml)
 
 # David's Personal Blog
 
-A personal blog platform built with Next.js 14, TypeScript, Tailwind CSS, and Contentful CMS.
+A personal blog platform built with Next.js 14, TypeScript, Tailwind CSS, and Contentful CMS — with a Playwright E2E suite covering the newsletter subscribe journey.
+
+Live at [insidedtsbrain.com](https://www.insidedtsbrain.com)
+
+## Testing
+
+End-to-end tests (Playwright + TypeScript) for the newsletter subscribe journey:
+happy path, every error branch (400/409/503/500), the API-level 400 contract,
+and an accessibility scan. Network calls to beehiiv are intercepted, so tests
+never touch the real service.
+
+Tests live in [`e2e/`](e2e). Config in [`playwright.config.ts`](playwright.config.ts).
+
+**Run:** `npx playwright test`  ·  **UI mode:** `npx playwright test --ui`
+
+**Design note — closing the mock-drift gap:** UI tests mock `/api/subscribe`, so
+they never exercise the real route's beehiiv mapping. A separate integration test
+runs the *real* route against a local fake beehiiv (via an env-injected base URL
+on a dedicated port), covering the 200/409/500 branches with zero risk of hitting
+production. CI runs the whole suite on every push/PR — no secrets required.
 
 ## Features
 
@@ -21,6 +39,8 @@ A personal blog platform built with Next.js 14, TypeScript, Tailwind CSS, and Co
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
 - **CMS**: Contentful
+- **Testing**: Playwright, @axe-core/playwright
+- **CI**: GitHub Actions
 - **Code Highlighting**: Prism.js
 - **Hosting**: Vercel
 - **Newsletter**: Beehiiv
@@ -30,7 +50,8 @@ A personal blog platform built with Next.js 14, TypeScript, Tailwind CSS, and Co
 ### 1. Clone and Install
 
 ```bash
-cd /Users/davidtownsend/projects/my_blog_v4
+git clone https://github.com/dtownsend/my_blog_v4_wAI.git
+cd my_blog_v4_wAI
 npm install
 ```
 
@@ -93,7 +114,13 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000)
 
-### 5. Set Up Contentful Webhook (Production)
+### 5. Run the Tests
+
+```bash
+npx playwright test
+```
+
+### 6. Set Up Contentful Webhook (Production)
 
 Add a webhook in Contentful pointing to:
 ```
@@ -107,6 +134,8 @@ Set `CONTENTFUL_REVALIDATE_SECRET` in your environment.
 ## Project Structure
 
 ```
+e2e/                   # Playwright E2E tests
+.github/workflows/     # CI (Playwright on every push/PR)
 src/
 ├── app/
 │   ├── api/           # API routes
@@ -139,23 +168,6 @@ npm run build
 ```
 
 Or connect your GitHub repo to Vercel for automatic deployments.
-
-## Testing
-
-End-to-end tests (Playwright + TypeScript) for the newsletter subscribe journey:
-happy path, every error branch (400/409/503/500), the API-level 400 contract,
-and an accessibility scan. Network calls to beehiiv are intercepted, so tests
-never touch the real service.
-
-**Run:** `npx playwright test`  ·  **UI mode:** `npx playwright test --ui`
-
-**Design note — closing the mock-drift gap:** UI tests mock `/api/subscribe`, so
-they never exercise the real route's beehiiv mapping. A separate integration test
-runs the *real* route against a local fake beehiiv (via an env-injected base URL
-on a dedicated port), covering the 200/409/500 branches with zero risk of hitting
-production. CI runs the whole suite on every push/PR — no secrets required.
-
-
 
 ## License
 
