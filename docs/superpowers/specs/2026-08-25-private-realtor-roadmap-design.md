@@ -242,15 +242,31 @@ All four sites were loaded and captured before this spec was finalised, so §4,
   consent was given on anyone's behalf.
 - Both Luxury Presence sites carry third-party accessibility overlay widgets and
   floating call/email buttons.
+- **`ruthkrishnan.com` opens on an 88-second background video**, not a static
+  hero, with an oversized "OVER A BILLION DOLLARS IN SALES" overlay that the
+  site itself clips at both edges. Naive capture catches the overlay mid-clip and
+  reads as a broken screenshot. Its hero section is also only 279 CSS px tall, so
+  the 520 px crop legitimately includes the section beneath it — that is what the
+  page looks like on a phone and is kept.
 
 ### Capture method
 
 Local Playwright (already a devDependency), Chromium, viewport 390x844 at
 `deviceScaleFactor: 3`, mobile UA. Wait for `document.fonts.ready` plus a settle
 delay, hide consent banners by CSS, screenshot, crop to the top 520 CSS px hero
-band, encode WebP q82. Result: 1170x1560 each, 315 KB for all four. The capture
+band, encode WebP q82. Result: 1170x1560 each, ~384 KB for all four. The capture
 script was throwaway and is not committed; this paragraph is the reproduction
 recipe if a site redesigns.
+
+Two things that cost time and are worth not rediscovering:
+
+- **Do not pause a background video to get a deterministic frame.** Pausing makes
+  Chromium render native video controls over the hero, which is worse than the
+  problem being solved. Let it play and capture several candidate frames instead.
+- **Only consent banners get hidden, never site content.** Hiding a cookie banner
+  removes a browser-level interruption; hiding a site's own headline would
+  misrepresent their design. `ruthkrishnan.com` was solved by frame selection,
+  not by hiding its overlay.
 
 ## Risks
 
