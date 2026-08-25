@@ -74,7 +74,7 @@ same mechanism `/cv` already uses.
 |------|---------|
 | `src/app/(standalone)/p/ajvt6e5hnk/page.tsx` | Metadata, page shell, sticky nav, all nine sections as JSX |
 | `src/app/(standalone)/p/ajvt6e5hnk/_components.tsx` | `Section`, `Card`, `Callout`, `SiteCard` |
-| `public/roadmap/*.webp` | Four site screenshots (creates `public/`) |
+| `public/roadmap/*.webp` | Four site screenshots, already captured (creates `public/`) |
 | `e2e/private-roadmap.spec.ts` | `noindex` assertion + axe scan |
 
 **Deliberate convention break:** components are colocated under the route rather
@@ -122,21 +122,36 @@ Four cards, each with what it's good at and what it costs in time or money:
 - **Custom build** — most control, higher upfront cost, lower long-run cost,
   needs someone to maintain it.
 
+Each card names which of the §5 examples is built that way, and links to it.
+The section is written against the evidence in "Field findings" below — in
+particular, that none of the four sites she admires uses Squarespace/Wix, and
+none is a custom build. That is a real signal and the page should say so plainly
+rather than presenting four options as equally represented in the wild.
+
 ### 5. Bay Area examples
 Four `SiteCard`s, each a mobile hero screenshot, the site name, one line on why
-it's here, and a full-width tap target to open it. These one-liners are David's
-own read on each site, not verified market data, and are phrased that way rather
-than as claims of fact:
-- `ruthkrishnan.com` — currently the top-producing agent in San Francisco.
-- `kinokorealestate.com` — polished, seller-focused.
-- `siliconvalleyandbeyond.com` — the Silicon Valley benchmark.
-- `pacificedgesf.com` — built around the agent's personality.
+it's here, **the platform it is actually built on**, and a full-width tap target
+to open it. Naming the stack is what ties this section back to §4 — it turns an
+abstract list of tradeoffs into four worked examples.
+
+The "why it's here" lines are David's own read, not verified market data, and are
+phrased as opinion. Where a site makes a claim about itself, the page attributes
+it to the site rather than repeating it as fact.
+
+| Site | Built on | Why it's here |
+|------|----------|---------------|
+| `ruthkrishnan.com` | WordPress (nginx / PHP / Plesk) | The site claims "#1 ranked San Francisco real estate agents (per MLS)" — attributed as their claim |
+| `kinokorealestate.com` | Luxury Presence | Polished and seller-focused; heavy display type |
+| `siliconvalleyandbeyond.com` | WordPress (Site Kit by Google) | The Silicon Valley benchmark; brokerage-affiliated |
+| `pacificedgesf.com` | Luxury Presence | Built around the agents' personality; leads with awards |
 
 ### 6. Building the site
 - Layout and what pages the site actually needs.
 - **Bilingual decision** — whether to run a second language and which; this
   affects platform choice, so it belongs before she commits.
-- Lead capture and where captured leads go.
+- Lead capture and where captured leads go. Both Luxury Presence sites use
+  persistent floating call/email buttons; that pattern is worth showing as the
+  concrete default rather than describing abstractly.
 
 ### 7. Getting found
 SEO fundamentals, social profiles, and brokerage / professional network
@@ -151,9 +166,16 @@ legal exposure.
 - **Fair Housing** and **Equal Housing Opportunity** logos; the Realtor® mark
   if she is a NAR member.
 - License number and brokerage info in the sitewide footer.
+  `siliconvalleyandbeyond.com` puts "DAWN THOMAS | DRE# 01460529" in a bar above
+  the header, with Engel & Völkers branding co-equal to her own mark. Show this
+  screenshot detail — it answers "what does this actually look like" in one image.
 - Privacy policy, terms of use, cookie/consent banner.
 - **Accessibility (WCAG 2.1 AA)** — real estate sites are a frequent ADA
-  litigation target.
+  litigation target. Two of the four example sites ship a third-party
+  accessibility *overlay widget*. The page should note that these overlays are
+  widely criticised, do not by themselves make a site conformant, and have not
+  reliably prevented claims — they are not a substitute for building the site
+  accessibly. Framed as "worth asking a professional about", not as legal advice.
 
 ### 9. Your thoughts
 A clearly marked section with prompting questions — which examples she liked
@@ -200,14 +222,49 @@ Screenshots render through `next/image` with explicit `width`/`height`, a
     should meet it.
 - Manual: Chrome at 390x844, screenshot to David before commit.
 
+## Field findings (captured 2026-08-25)
+
+All four sites were loaded and captured before this spec was finalised, so §4,
+§5, §6 and §8 are written against evidence rather than assumption.
+
+- **All four reachable, none bot-blocked.** The `__cf_bm` cookies on the two
+  Cloudflare sites are standard bot-management cookies set on every request, not
+  a challenge.
+- **Stacks:** two WordPress (`ruthkrishnan.com` — nginx/PHP/Plesk;
+  `siliconvalleyandbeyond.com` — Site Kit by Google plugin) and two Luxury
+  Presence (`kinokorealestate.com`, `pacificedgesf.com`). **No Squarespace/Wix
+  and no custom builds among the four.**
+- `ruthkrishnan.com` serves `x-powered-by: PHP/7.4`, which reached end-of-life in
+  November 2022. Used in §4 to make the WordPress maintenance burden concrete
+  rather than theoretical.
+- **Consent banners** on `kinokorealestate.com` and `pacificedgesf.com`. For
+  capture these were hidden via CSS, *not* dismissed by clicking "Accept" — no
+  consent was given on anyone's behalf.
+- Both Luxury Presence sites carry third-party accessibility overlay widgets and
+  floating call/email buttons.
+
+### Capture method
+
+Local Playwright (already a devDependency), Chromium, viewport 390x844 at
+`deviceScaleFactor: 3`, mobile UA. Wait for `document.fonts.ready` plus a settle
+delay, hide consent banners by CSS, screenshot, crop to the top 520 CSS px hero
+band, encode WebP q82. Result: 1170x1560 each, 315 KB for all four. The capture
+script was throwaway and is not committed; this paragraph is the reproduction
+recipe if a site redesigns.
+
 ## Risks
 
-**Screenshot capture is the one step that can fail.** Cookie banners, lazy-loaded
-heroes, or bot blocking may produce an unusable capture. Per-site fallback: drop
-to a link-only card with no image. Decided per site, not all-or-nothing.
+**Screenshot capture is resolved** — 4/4 succeeded, no link-only fallbacks
+needed. The residual risk is staleness: these sites will redesign, and the
+screenshots will silently drift out of date. Acceptable for a document with one
+reader and a short useful life.
 
-**Repo gains a `public/` directory** for the first time. Four optimized WebP
-files; no build configuration change required.
+**Screenshots are 1170 px wide**, which is roughly 1.85x at the page's 632 px
+maximum content width — slightly under true 2x. Not worth re-capturing; the
+images are reference thumbnails and the reader taps through to the live site.
+
+**Repo gains a `public/` directory** for the first time. Four WebP files totalling
+315 KB; no build configuration change required.
 
 ## Open questions
 
