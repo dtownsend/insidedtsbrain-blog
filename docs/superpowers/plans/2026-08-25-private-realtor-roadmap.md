@@ -176,7 +176,7 @@ export const metadata: Metadata = {
 
 export default function PrivateRoadmapPage() {
   return (
-    <main className="mx-auto max-w-2xl px-5 pb-24">
+    <main className="mx-auto max-w-xl px-5 pb-24">
       <h1 className="pt-10 text-2xl font-semibold tracking-tight text-gray-900">
         A roadmap for your real estate website
       </h1>
