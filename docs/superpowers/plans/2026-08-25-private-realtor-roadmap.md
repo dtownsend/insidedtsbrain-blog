@@ -244,7 +244,7 @@ export const SECTIONS = [
   { id: 'examples', label: 'Examples' },
   { id: 'found', label: 'Getting found' },
   { id: 'compliance', label: 'Compliance' },
-  { id: 'next', label: "What's next" },
+  { id: 'next', label: 'To think about' },
   { id: 'thoughts', label: 'Your thoughts' },
 ] as const;
 
