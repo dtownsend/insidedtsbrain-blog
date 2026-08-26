@@ -42,3 +42,12 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# agent skills
+# Vendored skill content is managed by the skills CLI and restored from
+# skills-lock.json, which IS committed. .claude/skills is a symlink into
+# .agents/skills so Claude Code can discover them (it only scans .claude/skills,
+# ~/.claude/skills, and plugin dirs). No trailing slash on the symlink -- git
+# treats a symlink as a file, so a trailing slash would not match it.
+/.agents/skills/
+/.claude/skills
