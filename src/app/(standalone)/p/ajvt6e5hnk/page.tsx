@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import AnswersForm from './_AnswersForm';
 import {
   Callout,
   Card,
@@ -467,29 +468,7 @@ export default function PrivateRoadmapPage() {
           Whatever you type here is saved so you can close the page and come
           back to it.
         </Callout>
-        {/* Prompts only for now; Task 9 replaces this list with the wired
-            form. The surrounding copy stays. */}
-        <Card title="Questions">
-          <ol className="list-decimal space-y-3 pl-5">
-            <li>
-              Which of the four sites in section 5 did you like, and what
-              specifically — the layout, the photography, the tone?
-            </li>
-            <li>
-              Which one did you dislike? That is usually the more useful answer.
-            </li>
-            <li>
-              What are you comfortable spending, upfront and per month? A range
-              is fine.
-            </li>
-            <li>How much do you want to run yourself?</li>
-            <li>Bilingual — yes or no, and which language?</li>
-            <li>Have you asked your broker about IDX yet?</li>
-            <li>
-              Is there a site — realtor or not — whose feel you just like?
-            </li>
-          </ol>
-        </Card>
+        <AnswersForm />
       </Section>
     </main>
   );

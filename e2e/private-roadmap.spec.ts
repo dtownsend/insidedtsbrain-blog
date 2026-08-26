@@ -28,3 +28,17 @@ test('private roadmap page has no accessibility violations', async ({ page }) =>
   // The 2nd arg to expect() is a message shown ON FAILURE.
   expect(results.violations, `Accessibility violations:\n${readable}`).toEqual([]);
 });
+
+test('section 9 saves an answer and shows it again on reload', async ({ page }) => {
+  const value = `the second one ${Date.now()}`;
+
+  await page.goto(ROUTE);
+  const field = page.locator('#liked');
+  await expect(field).toBeEnabled();
+  await field.fill(value);
+  await page.getByRole('button', { name: 'Save my answers' }).click();
+  await expect(page.getByText('Saved.')).toBeVisible();
+
+  await page.reload();
+  await expect(page.locator('#liked')).toHaveValue(value);
+});
