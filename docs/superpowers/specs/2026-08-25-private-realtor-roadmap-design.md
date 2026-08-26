@@ -1,7 +1,7 @@
 # Private Realtor Roadmap Page — Design Spec
 
 **Date:** 2026-08-25
-**Status:** Approved for planning
+**Status:** Approved for planning; **amended 2026-08-25** — §9 now collects answers (see "Privacy model")
 **Author:** David Townsend (with Claude)
 
 ## Summary
@@ -12,9 +12,11 @@ email, website platform, examples to react to, and the compliance obligations
 that come with a real estate site.
 
 The page exists to have a conversation. David shares the URL directly with one
-reader (referred to below as "the reader"); nobody else is meant to find it. It
-is a static document — no accounts, no forms, no data collected, no personal
-information exchanged.
+reader (referred to below as "the reader"); nobody else is meant to find it.
+
+**Amended:** §9 now collects the reader's answers through a form and stores them,
+so both parties can read them back on the page. The page is no longer a static
+document and no longer free of personal information. See "Privacy model".
 
 ## Goals
 
@@ -30,12 +32,14 @@ information exchanged.
 
 - **No authentication.** Privacy is an unguessable URL plus `noindex`. See
   "Privacy model" for what that does and does not buy.
-- **No persistence.** No checkboxes, no saved notes, no localStorage, no API
-  route, no database. The reader replies to David directly.
+- ~~**No persistence.**~~ **Superseded 2026-08-25.** §9 collects answers via a
+  form, POSTs them to an API route, and stores them so both parties can read
+  them back. Everything outside §9 remains static and stateless.
 - **No Contentful.** The content is hardcoded in the repo. This is one page for
   one reader; a new content type is not worth the ceremony.
-- **No interaction.** Every section renders expanded. No collapsibles, no JS
-  beyond what Next ships by default.
+- **No collapsibles.** Every section renders expanded.
+- **Minimal JS.** §9 is the only client component on the page. Sections 1–8 ship
+  no JavaScript of their own.
 - **English only.** (The page *asks* whether her future site should be
   bilingual; the page itself is not.)
 - **No site chrome.** No header, no footer, not in `NAV_ITEMS`.
@@ -60,9 +64,59 @@ Four things keep it unlisted, verified against the current repo:
 **Accepted exposure, stated so it is a decision and not a surprise:** the URL
 appears in Vercel build output and in the reader's browser history, and any
 messaging platform she pastes it into (iMessage, Slack, WhatsApp) will fetch it
-to build a link preview. This is acceptable because the page holds no personal
-or sensitive information. If that ever changes, the privacy model must change
-with it — this is the trigger to revisit.
+to build a link preview.
+
+**That trigger has now fired**, and David revisited it on 2026-08-25. His framing,
+recorded because it is what the decision rests on: this is a temporary
+illustration page for two people, showing what a proper realtor site needs. It
+is not a data collection, and is not expected to carry personal information.
+
+The revised model, with the tradeoff stated:
+
+- **Answers are readable and writable by anyone holding the URL.** No passcode,
+  no login. A shared-passcode option and an owner-only-read option were both
+  offered and declined in favour of simplicity. Deliberate, not an oversight.
+- **Blast radius is bounded at the endpoint.** The API route writes to one fixed
+  entry ID, accepts only an allowlisted set of fields with per-field length caps,
+  and can never create entries or reach any other content. The worst case is that
+  the one record gets overwritten.
+- **Answers stay out of the published space.** The entry is never published;
+  both read and write go through the Management API. They therefore cannot
+  surface in any Delivery API query the blog makes.
+- **§1 says so in plain words.** The reader is told, in the first thing she
+  reads, that the page is unlisted but "not secure" and that nothing personal
+  should go in it, plus an offer to build something properly secured if she
+  proceeds. §9 repeats that her answers are saved and will still be there when
+  she comes back.
+
+  An earlier version of this spec required the "anyone with the link can read
+  this" warning to sit in §9, at the point of entry, on the grounds that a
+  warning 12,000 px earlier is a warning she will not look at. **Amended
+  2026-08-26:** it lives in §1 instead. The substance is unchanged and it is the
+  first thing on the page rather than the last, which for a document read once,
+  top to bottom, is a defensible place for it. The residual risk is a reader who
+  jumps straight to §9 from the contents grid and never sees §1.
+- **The trigger is reset, not removed.** §9 asks about budget, so the page will
+  hold something once she answers. If it ever collects a phone number, an email
+  address, a document, or anything a stranger could act on, this decision gets
+  revisited rather than inherited. The page being temporary, the natural end
+  state is deleting the entry and the route when the conversation is done.
+
+## Storage
+
+One Contentful entry, read and written through the Management API.
+
+| Decision | Choice | Why |
+|----------|--------|-----|
+| Store | Contentful, space already in use | No new vendor, and David can read and edit the answers in the Contentful web app he already knows |
+| Shape | One fixed entry, `roadmapAnswersSingleton`, of a new `roadmapAnswers` content type | A singleton cannot grow unbounded; a public endpoint that can only overwrite one record has a bounded blast radius |
+| Published? | **No.** Draft only | Read and write both go through the CMA, so the answers never enter the Delivery API and cannot leak into blog queries. It also sidesteps CDN caching — a draft read is always fresh, which is what "she comes back and sees her answers" needs |
+| Credential | `CONTENTFUL_MANAGEMENT_TOKEN`, server-side only | Never `NEXT_PUBLIC_`. Currently a placeholder in `.env.local`; must be created before this works |
+| Fields | 7 long-text fields, allowlisted, 2000 chars each | Matches the seven questions in §9 |
+
+Persistence is server-side rather than `localStorage` because the requirement is
+that she can close the page, come back — including on another device — and still
+see what she wrote. `localStorage` cannot do that.
 
 ## Route and files
 
@@ -145,19 +199,11 @@ it to the site rather than repeating it as fact.
 | `siliconvalleyandbeyond.com` | WordPress (Site Kit by Google) | The Silicon Valley benchmark; brokerage-affiliated |
 | `pacificedgesf.com` | Luxury Presence | Built around the agents' personality; leads with awards |
 
-### 6. Building the site
-- Layout and what pages the site actually needs.
-- **Bilingual decision** — whether to run a second language and which; this
-  affects platform choice, so it belongs before she commits.
-- Lead capture and where captured leads go. Both Luxury Presence sites use
-  persistent floating call/email buttons; that pattern is worth showing as the
-  concrete default rather than describing abstractly.
-
-### 7. Getting found
+### 6. Getting found
 SEO fundamentals, social profiles, and brokerage / professional network
 listings pointing back at the domain.
 
-### 8. Compliance
+### 7. Compliance
 Promoted out of "next steps" into its own section: these are the highest-stakes
 items on the page, several constrain the platform choice, and one carries real
 legal exposure.
@@ -175,7 +221,37 @@ legal exposure.
   accessibility *overlay widget*. The page should note that these overlays are
   widely criticised, do not by themselves make a site conformant, and have not
   reliably prevented claims — they are not a substitute for building the site
-  accessibly. Framed as "worth asking a professional about", not as legal advice.
+  accessibly. Worth asking a professional about before launch.
+
+**Amended 2026-08-26 — no legal disclaimer.** An earlier version of this spec
+required the section to be framed explicitly as "not legal advice", and the page
+carried a line saying so. David removed it: this is an informal document written
+to a friend who knows he is not a lawyer and is not selling her a professional
+service. A disclaimer between two people in that relationship is ceremony, not
+protection. The section now opens "From what I understand, these are things
+strongly recommended to have on your website" — which hedges the confidence
+without pretending to a formality the document does not have. Individual items
+still say "ask your broker" where that is the actual next step.
+
+### 8. What happens next
+**Amended 2026-08-25.** This was §6, "Building the site", sitting between the
+platform options and Getting found. It asked the reader to settle page structure
+and lead capture before she had chosen a platform — a decision she has no basis
+to make at that point in the document. Moved here and reframed as the step after
+the conversation, so it answers "what happens if I reply?" rather than demanding
+an answer.
+
+- Layout and what pages the site actually needs.
+- Lead capture and where captured leads go. Both Luxury Presence sites use
+  persistent floating call/email buttons; that pattern is worth showing as the
+  concrete default rather than describing abstractly.
+
+The **bilingual decision** that lived here is deleted rather than moved: it is
+already a question in §9, which is where the reader answers things. It stays a
+§9 question even though it constrains the platform choice, because she cannot
+answer it usefully until she has seen §4 and §5 anyway.
+
+§9 stays last so the answers form is the final thing on the page.
 
 ### 9. Your thoughts
 A clearly marked section with prompting questions — which examples she liked
