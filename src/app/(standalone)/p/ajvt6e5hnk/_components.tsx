@@ -157,15 +157,19 @@ export function SiteCard({
       rel="noopener noreferrer"
       className="block overflow-hidden rounded-xl border border-gray-200 bg-white transition-[transform,border-color] duration-150 ease-out active:scale-[0.985] [@media(hover:hover)]:hover:border-gray-300"
     >
-      {/* Cropped to 3:2 rather than the native 0.75: four full heroes ran
-          ~1870px of image in a ~12,000px page. These are thumbnails. */}
+      {/* Cropped to 16:9 rather than the native 0.75: four full heroes ran
+          ~1870px of image in a ~12,000px page, and these are thumbnails. 16:9
+          over 3:2 because kinoko's headline spans nearly the whole capture —
+          a 3:2 band sliced horizontally through "Francisco", while the shorter
+          band lands in the gap between headline lines. Checked against all
+          four; none cuts through text. */}
       <Image
         src={image}
         alt={`The ${name} home page as it looks on a phone`}
         width={SHOT_W}
         height={SHOT_H}
         sizes={SHOT_SIZES}
-        className="aspect-[3/2] w-full border-b border-gray-200 object-cover object-top"
+        className="aspect-[16/9] w-full border-b border-gray-200 object-cover object-top"
       />
       <div className="p-4">
         <h3 className="text-lg font-semibold text-gray-900">{name}</h3>

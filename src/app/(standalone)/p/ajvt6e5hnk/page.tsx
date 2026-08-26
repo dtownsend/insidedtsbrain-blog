@@ -450,15 +450,8 @@ export default function PrivateRoadmapPage() {
             whole lead-capture strategy, and it works.
           </p>
           <p>
-            The moment you collect a name and an email you need a privacy policy
-            —{' '}
-            <a
-              href="#compliance"
-              className="font-medium text-green-700 underline"
-            >
-              see section 7
-            </a>
-            .
+            The moment you collect a name and an email you need a privacy
+            policy.
           </p>
         </Card>
       </Section>

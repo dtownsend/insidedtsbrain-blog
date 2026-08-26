@@ -48,7 +48,9 @@ These are deliberate, and each resolves a conflict inside the spec itself or a s
 7. **OpenGraph tags are inherited from the root layout,** so a link preview will read "Inside DTs Brain – Thoughts, Stories, and Art". The spec's privacy model explicitly accepts that messaging platforms will fetch the page for a preview, so this is left alone rather than overridden. Flag it to David; it is a two-line change if he wants a neutral preview.
 
 8. **Sections are separated by space alone — no rule.** 56 px (`mt-14`) plus the numbered badge already marks a section start; a `border-t` on top of that is a third signal doing the same job. Dropped after the layout review.
-9. **Section 5's screenshots are cropped to 3:2**, not shown at their native 0.75 aspect. Four full heroes ran ~1870 px of image in a ~12,000 px page; the band runs ~930 px and keeps the four sites comparable. They are reference thumbnails — the reader taps through to the live site.
+9. **Section 5's screenshots are cropped to 16:9**, not shown at their native 0.75 aspect. Four full heroes ran ~1870 px of image in a ~12,000 px page; the band keeps the four comparable and short. They are reference thumbnails — the reader taps through to the live site.
+
+    **Revised from 3:2 on 2026-08-26.** `kinokorealestate.com`'s headline spans nearly the full height of the capture, so a 3:2 band sliced horizontally through the middle of the word "Francisco" — no `object-position` could avoid it, because the headline is taller than the band. 16:9 lands in the gap between headline lines instead. Verified in the browser against all four: none cuts through text.
 10. **Press and hover states are specified, and hover is gated.** `active:scale-[0.97]` on pills, `active:scale-[0.985]` on site cards. Hover sits behind `[@media(hover:hover)]:` because Tailwind 3.4's bare `hover:` is a plain `:hover`, which on a phone sticks after a tap. Do not switch this on globally via `future.hoverOnlyWhenSupported` — that changes every page on the site.
 11. **The sticky bar is solid white, not `bg-white/95 backdrop-blur`.** Over white content the blur is invisible and costs a compositing layer on every scroll frame.
 12. **No fade mask on the pill row.** Nine pills run ~1000 px against a 390 px viewport, so the fourth is always cut — that clipped pill *is* the scroll affordance. A right-edge gradient was tried and removed: it blurred the very cue it was meant to add.
@@ -392,15 +394,14 @@ export function SiteCard({
       rel="noopener noreferrer"
       className="block overflow-hidden rounded-xl border border-gray-200 bg-white transition-[transform,border-color] duration-150 ease-out active:scale-[0.985] [@media(hover:hover)]:hover:border-gray-300"
     >
-      {/* Cropped to 3:2 rather than the native 0.75: four full heroes ran
-          ~1870px of image in a ~12,000px page. These are thumbnails. */}
+      {/* Cropped to 16:9 rather than the native 0.75 — see Deviation 9. */}
       <Image
         src={image}
         alt={`The ${name} home page as it looks on a phone`}
         width={SHOT_W}
         height={SHOT_H}
         sizes={SHOT_SIZES}
-        className="aspect-[3/2] w-full border-b border-gray-200 object-cover object-top"
+        className="aspect-[16/9] w-full border-b border-gray-200 object-cover object-top"
       />
       <div className="p-4">
         <h3 className="text-lg font-semibold text-gray-900">{name}</h3>
@@ -1093,12 +1094,7 @@ Replace the `thoughts` placeholder and remove the `SECTIONS.slice(...)` block en
       strategy, and it works.
     </p>
     <p>
-      The moment you collect a name and an email you need a privacy policy —
-      see{' '}
-      <a href="#compliance" className="font-medium text-green-700 underline">
-        section 7
-      </a>
-      .
+      The moment you collect a name and an email you need a privacy policy.
     </p>
   </Card>
 </Section>
