@@ -682,7 +682,7 @@ const SITES = [
     name: 'ruthkrishnan.com',
     href: 'https://ruthkrishnan.com',
     platform: 'WordPress (nginx, PHP, Plesk)',
-    note: 'The site describes them as the #1 ranked San Francisco real estate agents by MLS volume — that is their claim, not my verification of it. It opens on an 88-second background video, which is a real decision with a real cost: it is by far the heaviest thing on the page.',
+    note: 'The site describes them as the #1 ranked San Francisco agents by MLS volume — their claim, not my verification of it. It opens on an 88-second background video, which is by far the heaviest thing on the page.',
     image: '/roadmap/ruthkrishnan.webp',
   },
   {
@@ -721,10 +721,9 @@ Replace the placeholders for `platform` and `examples`:
       nothing to maintain, roughly $16–25 a month.
     </p>
     <p>
-      The cost is control: you get what the template gives you. The
-      real-estate-specific pieces — MLS listing feeds, IDX search, lead routing
-      into a CRM — are either bolted on through third-party add-ons or not
-      available at all.
+      The cost is control: the real-estate-specific pieces — MLS listing feeds,
+      IDX search, lead routing — are either bolted on through third-party
+      add-ons or not available at all.
     </p>
   </Card>
 
@@ -735,16 +734,11 @@ Replace the placeholders for `platform` and `examples`:
         and plugins exist for everything, and you can host it anywhere.
       </p>
       <p>
-        The maintenance is yours. WordPress, the theme and every plugin need
-        updating, and when they aren&apos;t, sites get broken into. One of the
-        sites in section 5, ruthkrishnan.com, is currently served by PHP 7.4 —
-        which stopped receiving security fixes in November 2022. That isn&apos;t
-        a swipe at them. It is what happens when keeping the site current is
-        nobody&apos;s actual job.
-      </p>
-      <p>
-        Budget for hosting (about $15–40 a month) and for either your own time or
-        someone on a small retainer.
+        The maintenance is yours. One of the sites in section 5,
+        ruthkrishnan.com, is currently served by PHP 7.4 — which stopped
+        receiving security fixes in November 2022. That isn&apos;t a swipe at
+        them. It is what happens when keeping the site current is nobody&apos;s
+        actual job.
       </p>
       <p className="text-sm text-gray-600">
         Two of the four examples:{' '}
@@ -757,9 +751,9 @@ Replace the placeholders for `platform` and `examples`:
 
     <Card title="Realtor-specific platforms" onGroup>
       <p>
-        Built for this industry, so IDX search, listing pages, lead capture and a
-        CRM come as standard rather than as add-ons — and they handle the
-        maintenance. The three worth looking at:{' '}
+        Built for this industry, so IDX search, listing pages, lead capture and
+        a CRM come as standard rather than as add-ons. The three worth looking
+        at:{' '}
         <a
           href="https://placester.com"
           target="_blank"
@@ -803,8 +797,8 @@ Replace the placeholders for `platform` and `examples`:
       <p className="mt-2">
         Typically several hundred dollars a month, often with a setup fee on top
         and an annual contract underneath. Over three years that is the largest
-        number on this page by a wide margin. Get a written quote, including what
-        happens at renewal, before you fall in love with a demo.
+        number on this page by a wide margin. Get a written quote before you
+        fall in love with a demo.
       </p>
     </Callout>
   </CardGroup>
@@ -826,7 +820,7 @@ Replace the placeholders for `platform` and `examples`:
 <Section id="examples" number={5} title="Bay Area examples">
   <p>
     These were pulled from a quick search of the most popular realtors in the
-    Bay Area — it was not scientific.
+    Bay Area. It was not scientific.
   </p>
   <div className="space-y-6">
     {SITES.map((site) => (
