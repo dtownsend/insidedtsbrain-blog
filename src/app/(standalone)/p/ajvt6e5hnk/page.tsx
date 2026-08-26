@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import {
   Callout,
   Card,
   CardGroup,
   Section,
-  SECTIONS,
-  SiteCard,
   SectionNav,
+  SiteCard,
 } from './_components';
 
 const SITES = [
@@ -350,16 +350,147 @@ export default function PrivateRoadmapPage() {
         </Card>
       </Section>
 
-      {SECTIONS.slice(6).map((section, index) => (
-        <Section
-          key={section.id}
-          id={section.id}
-          number={index + 7}
-          title={section.label}
-        >
-          <p>Placeholder — filled in by a later task.</p>
-        </Section>
-      ))}
+      <Section id="compliance" number={7} title="Compliance">
+        <Callout tone="note">
+          From what I understand, these are things strongly recommended to have
+          on your website.
+        </Callout>
+
+        <Card title="IDX and MLS listings">
+          <p>
+            Live MLS listings on your own site means an IDX feed, and IDX comes
+            with rules: your MLS has to approve it, your brokerage has to permit
+            it, and there is usually a monthly fee plus a display agreement.
+          </p>
+          <p>
+            Ask your broker before you choose a platform. That one question
+            rules some options out on its own.
+          </p>
+        </Card>
+
+        <Card title="Fair Housing">
+          <p>
+            The Equal Housing Opportunity logo belongs in your footer. So does
+            the Realtor® mark if you are a NAR member, and NAR has rules about
+            exactly how that mark is written.
+          </p>
+          <p>
+            Fair Housing law also constrains the words on the site. Describing
+            who a neighborhood suits, rather than what a property is, is where
+            agents get into trouble.
+          </p>
+        </Card>
+
+        <Card title="License and brokerage identification">
+          <p>
+            California requires your license number and your brokerage&apos;s
+            identification on your marketing. A sitewide footer is the minimum.
+          </p>
+          <figure className="overflow-hidden rounded-xl border border-gray-200 bg-white">
+            <div className="relative aspect-[1170/380]">
+              <Image
+                src="/roadmap/svandbeyond.webp"
+                alt="The top of siliconvalleyandbeyond.com: a bar reading DAWN THOMAS, DRE number 01460529, sitting above a header with the Engel and Völkers logo next to the Dawn Thomas Team logo"
+                fill
+                sizes="(max-width: 576px) 100vw, 536px"
+                className="object-cover object-top"
+              />
+            </div>
+            <figcaption className="border-t border-gray-200 bg-gray-50 px-4 py-2 text-sm text-gray-600">
+              siliconvalleyandbeyond.com puts the license number in a bar above
+              the header, with the brokerage mark sized equal to her own.
+            </figcaption>
+          </figure>
+          <p>
+            Confirm the exact wording with your broker — brokerages usually have
+            a required format.
+          </p>
+        </Card>
+
+        <Card title="Accessibility (WCAG 2.1 AA)">
+          <p>
+            Real estate sites are a frequent target for ADA website claims.
+            Building the site accessibly from the start costs very little.
+            Retrofitting one costs a lot.
+          </p>
+          <p>
+            Two of the four example sites run a third-party accessibility
+            overlay. These are widely criticized by accessibility practitioners
+            and by disabled users, they do not by themselves make a site
+            conformant, and they have not reliably prevented claims. Do not
+            treat one as the solution.
+          </p>
+        </Card>
+      </Section>
+
+      <Section id="next" number={8} title="Things to start to think about">
+        <Card title="What pages the site actually needs">
+          <p>
+            Home. About. Listings, active and sold. Buyers. Sellers. The
+            neighborhoods you work. Testimonials. Contact. That is the whole
+            list, and the first version can ship with six of them.
+          </p>
+          <p>
+            The commonest mistake is planning fifteen pages and publishing
+            three. Every page you add is a page you have to keep true.
+          </p>
+        </Card>
+
+        <Card title="Lead capture, and where the leads go">
+          <p>
+            A form, and a decision about where what it collects ends up — your
+            inbox, a spreadsheet, or a CRM. Pick one before the site is live,
+            not after the first lead is lost.
+          </p>
+          <p>
+            Both Luxury Presence sites in section 5 do the simplest version of
+            this well: a call button and an email button floating above the
+            page, staying put as you scroll. On a phone that is close to the
+            whole lead-capture strategy, and it works.
+          </p>
+          <p>
+            The moment you collect a name and an email you need a privacy policy
+            —{' '}
+            <a
+              href="#compliance"
+              className="font-medium text-green-700 underline"
+            >
+              see section 7
+            </a>
+            .
+          </p>
+        </Card>
+      </Section>
+
+      <Section id="thoughts" number={9} title="Your thoughts">
+        <Callout tone="note">
+          Whatever you type here is saved so you can close the page and come
+          back to it.
+        </Callout>
+        {/* Prompts only for now; Task 9 replaces this list with the wired
+            form. The surrounding copy stays. */}
+        <Card title="Questions">
+          <ol className="list-decimal space-y-3 pl-5">
+            <li>
+              Which of the four sites in section 5 did you like, and what
+              specifically — the layout, the photography, the tone?
+            </li>
+            <li>
+              Which one did you dislike? That is usually the more useful answer.
+            </li>
+            <li>
+              What are you comfortable spending, upfront and per month? A range
+              is fine.
+            </li>
+            <li>How much do you want to run yourself?</li>
+            <li>Bilingual — yes or no, and which language?</li>
+            <li>Have you asked your broker about IDX yet?</li>
+            <li>
+              Is there a site — realtor or not — whose feel you just like?
+            </li>
+          </ol>
+        </Card>
+      </Section>
     </main>
   );
 }

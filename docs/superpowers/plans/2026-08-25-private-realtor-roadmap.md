@@ -988,11 +988,6 @@ Replace the `compliance` placeholder:
 
 ```tsx
 <Section id="compliance" number={7} title="Compliance">
-  <p>
-    This one is easy to skip and first in importance: several of these
-    constrain the platform choice in section 4, and one carries real legal
-    exposure.
-  </p>
   <Callout tone="note">
     From what I understand, these are things strongly recommended to have on
     your website.
@@ -1002,12 +997,10 @@ Replace the `compliance` placeholder:
     <p>
       Live MLS listings on your own site means an IDX feed, and IDX comes with
       rules: your MLS has to approve it, your brokerage has to permit it, and
-      there is usually a monthly fee plus a display agreement covering what you
-      may and may not show.
+      there is usually a monthly fee plus a display agreement.
     </p>
     <p>
-      Ask your broker before you choose a platform. If the answer is yes, the
-      platform has to support your specific MLS — that one question rules some
+      Ask your broker before you choose a platform. That one question rules some
       options out on its own.
     </p>
   </Card>
@@ -1028,8 +1021,7 @@ Replace the `compliance` placeholder:
   <Card title="License and brokerage identification">
     <p>
       California requires your license number and your brokerage&apos;s
-      identification on your marketing. A sitewide footer is the minimum; some
-      brokerages ask for more.
+      identification on your marketing. A sitewide footer is the minimum.
     </p>
     <figure className="overflow-hidden rounded-xl border border-gray-200 bg-white">
       <div className="relative aspect-[1170/380]">
@@ -1048,23 +1040,7 @@ Replace the `compliance` placeholder:
     </figure>
     <p>
       Confirm the exact wording with your broker — brokerages usually have a
-      required format, and it is easier to build it in than to retrofit it.
-    </p>
-  </Card>
-
-  <Card title="Privacy policy, terms, and cookies">
-    <p>
-      The moment a form collects a name or an email address you need a privacy
-      policy saying what you do with it, and terms of use alongside it.
-    </p>
-    <p>
-      Two of the four example sites show a cookie consent banner, which is what
-      happens once you add analytics or ad tracking. Both are the Luxury
-      Presence ones.
-    </p>
-    <p>
-      Every platform in section 4 ships a template for these. A template is a
-      starting point, not a review.
+      required format.
     </p>
   </Card>
 
@@ -1075,18 +1051,10 @@ Replace the `compliance` placeholder:
       costs a lot.
     </p>
     <p>
-      Two of the four example sites run a third-party accessibility overlay — a
-      widget that bolts a toolbar onto the page and offers to fix accessibility
-      for you. These are widely criticized by accessibility practitioners and
-      by disabled users, they do not by themselves make a site conformant, and
-      they have not reliably prevented claims. Do not treat one as the
-      solution.
-    </p>
-    <p>
-      The real version is unglamorous: proper headings, alt text on images,
-      everything reachable by keyboard, and enough colour contrast to read.
-      Any competent builder can do this if you ask at the start. Worth asking a
-      professional about before you launch.
+      Two of the four example sites run a third-party accessibility overlay.
+      These are widely criticized by accessibility practitioners and by disabled
+      users, they do not by themselves make a site conformant, and they have not
+      reliably prevented claims. Do not treat one as the solution.
     </p>
   </Card>
 </Section>
