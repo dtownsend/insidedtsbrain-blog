@@ -53,7 +53,7 @@ export async function readAnswers(): Promise<{
   return { answers, updatedAt: entry.sys?.updatedAt ?? null };
 }
 
-export async function writeAnswers(answers: Answers): Promise<void> {
+async function putAnswers(answers: Answers): Promise<Response> {
   // Read the current version first: a create needs X-Contentful-Content-Type,
   // an update needs X-Contentful-Version. Same PUT either way.
   const existing = await fetch(entryUrl(), { headers: authHeaders(), cache: 'no-store' });
@@ -66,7 +66,7 @@ export async function writeAnswers(answers: Answers): Promise<void> {
     fields[field] = { [LOCALE]: answers[field] };
   }
 
-  const res = await fetch(entryUrl(), {
+  return fetch(entryUrl(), {
     method: 'PUT',
     headers: {
       ...authHeaders(),
@@ -77,6 +77,19 @@ export async function writeAnswers(answers: Answers): Promise<void> {
     },
     body: JSON.stringify({ fields }),
   });
+}
+
+export async function writeAnswers(answers: Answers): Promise<void> {
+  let res = await putAnswers(answers);
+
+  // 409 means someone wrote between our version read and our PUT — two tabs,
+  // two devices, or a double-tapped Save. The version we read is simply stale,
+  // so re-reading it and retrying once resolves it. Last write wins, which is
+  // the intended semantics for a single shared record.
+  if (res.status === 409) {
+    res = await putAnswers(answers);
+  }
+
   if (!res.ok) throw new Error(`Contentful write failed: ${res.status}`);
 
   // Deliberately never published: the answers stay out of the Delivery API, so
