@@ -7,6 +7,14 @@ const ROUTE = '/api/roadmap-answers';
 // flakiness — concurrency is genuinely meaningless against one shared record.
 test.describe.configure({ mode: 'serial' });
 
+// Chromium only. These assert an HTTP contract, which does not vary by browser
+// engine, and every one of them writes the same singleton entry — running them
+// in three projects at once races exactly as running them in parallel does.
+test.skip(
+  ({ browserName }) => browserName !== 'chromium',
+  'writes the shared singleton entry; one project is enough for an API contract',
+);
+
 test('rejects a field that is not a string', async ({ request }) => {
   const res = await request.post(ROUTE, { data: { budget: 12345 } });
   expect(res.status()).toBe(400);

@@ -29,7 +29,18 @@ test('private roadmap page has no accessibility violations', async ({ page }) =>
   expect(results.violations, `Accessibility violations:\n${readable}`).toEqual([]);
 });
 
-test('section 9 saves an answer and shows it again on reload', async ({ page }) => {
+test('section 9 saves an answer and shows it again on reload', async ({
+  page,
+  browserName,
+}) => {
+  // Chromium only: this writes the one shared Contentful entry, so three
+  // browser projects running it at once overwrite each other's value. The
+  // read-only tests above still run in every engine.
+  test.skip(
+    browserName !== 'chromium',
+    'writes the shared singleton entry; races across browser projects',
+  );
+
   const value = `the second one ${Date.now()}`;
 
   await page.goto(ROUTE);
