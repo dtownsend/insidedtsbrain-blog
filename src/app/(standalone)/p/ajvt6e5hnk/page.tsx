@@ -317,11 +317,44 @@ export default function PrivateRoadmapPage() {
         </p>
       </Section>
 
-      {SECTIONS.slice(5).map((section, index) => (
+
+      <Section id="found" number={6} title="Getting found">
+        <Card title="Search">
+          <p>
+            Title pages after what people actually search for: &ldquo;Homes for
+            sale in Noe Valley&rdquo; beats &ldquo;Listings&rdquo;. One page per
+            neighborhood you genuinely work, each with something on it only a
+            local would know to write.
+          </p>
+          <p>
+            Register the site with{' '}
+            <a
+              href="https://search.google.com/search-console"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-green-700 underline"
+            >
+              Google Search Console
+            </a>
+            . It is free, and it is how you find out you are invisible before
+            six months have gone by.
+          </p>
+        </Card>
+
+        <Card title="Everything pointing back">
+          <p>
+            Your brokerage profile, Zillow, Realtor.com, LinkedIn, Instagram —
+            every one of them has a website field. Put your domain in all of
+            them.
+          </p>
+        </Card>
+      </Section>
+
+      {SECTIONS.slice(6).map((section, index) => (
         <Section
           key={section.id}
           id={section.id}
-          number={index + 6}
+          number={index + 7}
           title={section.label}
         >
           <p>Placeholder — filled in by a later task.</p>
