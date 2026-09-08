@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { hasContentfulCredentials, NO_CONTENTFUL } from './contentful';
 
 const ROUTE = '/p/ajvt6e5hnk';
 
@@ -40,13 +41,8 @@ test('section 9 saves an answer and shows it again on reload', async ({
     browserName !== 'chromium',
     'writes the shared singleton entry; races across browser projects',
   );
-  // CI has no Contentful credentials on purpose, so the answers route
-  // answers 502 there; skip rather than fail.
-  const probe = await page.request.get('/api/roadmap-answers');
-  test.skip(
-    probe.status() === 502,
-    'Contentful not configured; the route cannot reach the roadmap entry',
-  );
+  // CI has no Contentful credentials on purpose; skip rather than fail.
+  test.skip(!hasContentfulCredentials, NO_CONTENTFUL);
 
   const value = `the second one ${Date.now()}`;
 
