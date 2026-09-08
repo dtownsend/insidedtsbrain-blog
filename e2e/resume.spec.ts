@@ -71,3 +71,15 @@ test('resume bullets do not expose a bullet glyph to assistive tech', async ({ p
   const snapshot = await firstList.ariaSnapshot();
   expect(snapshot).not.toContain('•');
 });
+
+test('sidebar links to the GitHub repo', async ({ page }) => {
+  await page.goto('/resume');
+
+  // The project card also links to the repo, so scope to the sidebar and
+  // match the icon link's aria-label exactly.
+  const sidebar = page.getByRole('complementary');
+  await expect(sidebar.getByRole('link', { name: 'GitHub', exact: true })).toHaveAttribute(
+    'href',
+    'https://github.com/dtownsend/insidedtsbrain-blog'
+  );
+});

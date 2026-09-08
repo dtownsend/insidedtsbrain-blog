@@ -9,6 +9,7 @@ export const SITE_CONFIG = {
   social: {
     twitter: '', // TODO: add when available
     linkedin: 'https://www.linkedin.com/in/dt90/',
+    github: 'https://github.com/dtownsend/insidedtsbrain-blog',
     bluesky: '', // TODO: add when available
     email: 'dtownsend90@gmail.com',
   },

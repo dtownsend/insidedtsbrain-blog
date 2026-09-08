@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { MapPin, Linkedin, Mail, Download } from 'lucide-react';
+import { MapPin, Linkedin, Github, Mail, Download } from 'lucide-react';
 import { getResumeItems, getSkills, getProfile, ProfileEntry } from '@/lib/contentful';
 import ResumeSection from '@/components/resume/ResumeSection';
 import SkillsSection from '@/components/resume/SkillsSection';
@@ -86,6 +86,17 @@ export default async function ResumeView() {
                     aria-label="LinkedIn"
                   >
                     <Linkedin size={20} />
+                  </a>
+                )}
+                {SITE_CONFIG.social.github && (
+                  <a
+                    href={SITE_CONFIG.social.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                    aria-label="GitHub"
+                  >
+                    <Github size={20} />
                   </a>
                 )}
                 {SITE_CONFIG.social.email && (
