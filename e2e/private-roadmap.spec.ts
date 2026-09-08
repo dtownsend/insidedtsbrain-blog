@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { hasContentfulCredentials, NO_CONTENTFUL } from './contentful';
 
 const ROUTE = '/p/ajvt6e5hnk';
 
@@ -40,6 +41,8 @@ test('section 9 saves an answer and shows it again on reload', async ({
     browserName !== 'chromium',
     'writes the shared singleton entry; races across browser projects',
   );
+  // CI has no Contentful credentials on purpose; skip rather than fail.
+  test.skip(!hasContentfulCredentials, NO_CONTENTFUL);
 
   const value = `the second one ${Date.now()}`;
 

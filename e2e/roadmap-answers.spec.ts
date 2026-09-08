@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { hasContentfulCredentials, NO_CONTENTFUL } from './contentful';
 
 const ROUTE = '/api/roadmap-answers';
 
@@ -26,6 +27,7 @@ test('rejects a field over the length cap', async ({ request }) => {
 });
 
 test('ignores fields that are not on the allowlist', async ({ request }) => {
+  test.skip(!hasContentfulCredentials, NO_CONTENTFUL);
   const res = await request.post(ROUTE, {
     data: { budget: 'about $2k', sys: { id: 'evil' }, fields: 'nope' },
   });
@@ -39,6 +41,7 @@ test('ignores fields that are not on the allowlist', async ({ request }) => {
 });
 
 test('round-trips an answer', async ({ request }) => {
+  test.skip(!hasContentfulCredentials, NO_CONTENTFUL);
   const value = `liked the second one ${Date.now()}`;
   const write = await request.post(ROUTE, { data: { liked: value } });
   expect(write.ok()).toBeTruthy();
