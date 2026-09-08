@@ -1,6 +1,14 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type APIRequestContext } from '@playwright/test';
 
 const ROUTE = '/api/roadmap-answers';
+
+// The route reads and writes one Contentful entry. CI has no Contentful
+// credentials on purpose (these tests write to the live entry), so the route
+// answers 502 there and the tests that need it skip with that reason.
+async function skipUnlessContentful(request: APIRequestContext) {
+  const probe = await request.get(ROUTE);
+  test.skip(probe.status() === 502, 'Contentful not configured; the route cannot reach the roadmap entry');
+}
 
 // Every test here writes the same singleton entry, so running them in parallel
 // races on Contentful's optimistic version lock. Serial is not a workaround for
@@ -26,6 +34,7 @@ test('rejects a field over the length cap', async ({ request }) => {
 });
 
 test('ignores fields that are not on the allowlist', async ({ request }) => {
+  await skipUnlessContentful(request);
   const res = await request.post(ROUTE, {
     data: { budget: 'about $2k', sys: { id: 'evil' }, fields: 'nope' },
   });
@@ -39,6 +48,7 @@ test('ignores fields that are not on the allowlist', async ({ request }) => {
 });
 
 test('round-trips an answer', async ({ request }) => {
+  await skipUnlessContentful(request);
   const value = `liked the second one ${Date.now()}`;
   const write = await request.post(ROUTE, { data: { liked: value } });
   expect(write.ok()).toBeTruthy();

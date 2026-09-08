@@ -23,6 +23,12 @@ runs the *real* route against a local fake beehiiv (via an env-injected base URL
 on a dedicated port), covering the 200/409/500 branches with zero risk of hitting
 production. CI runs the whole suite on every push/PR — no secrets required.
 
+**Contentful-backed tests skip in CI, on purpose.** The private roadmap's
+answer round-trip writes to a live Contentful entry, so the workflow carries no
+Contentful credentials; those tests (and the resume/skills content checks) skip
+with a stated reason when the credentials are absent and run for real locally,
+where `.env.local` has them.
+
 ## Features
 
 - **Blog** - Posts with tag filtering, pagination, and social sharing
