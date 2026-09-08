@@ -19,7 +19,7 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
 
   return (
     <div className="space-y-4">
-      <h3 className="font-semibold text-gray-900">Skills</h3>
+      <h2 className="font-semibold text-gray-900">Skills</h2>
       {categories.map((category) => {
         const categorySkills = groupedSkills[category];
         if (!categorySkills || categorySkills.length === 0) return null;

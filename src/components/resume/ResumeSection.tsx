@@ -75,12 +75,9 @@ export default function ResumeSection({ items, type }: ResumeSectionProps) {
                   </div>
 
                   {item.fields.descriptionBullets && item.fields.descriptionBullets.length > 0 && (
-                    <ul className="mt-3 space-y-1.5">
+                    <ul className="mt-3 space-y-1.5 list-disc pl-4 marker:text-gray-400">
                       {item.fields.descriptionBullets.map((bullet, index) => (
-                        <li
-                          key={index}
-                          className="text-gray-600 text-sm pl-4 relative before:content-['•'] before:absolute before:left-0 before:text-gray-400"
-                        >
+                        <li key={index} className="text-gray-600 text-sm">
                           {bullet}
                         </li>
                       ))}
