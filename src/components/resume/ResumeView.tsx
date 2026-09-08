@@ -1,8 +1,9 @@
 import Image from 'next/image';
-import { MapPin, Linkedin, Mail, Download } from 'lucide-react';
+import { MapPin, Linkedin, Github, Mail, Download } from 'lucide-react';
 import { getResumeItems, getSkills, getProfile, ProfileEntry } from '@/lib/contentful';
 import ResumeSection from '@/components/resume/ResumeSection';
 import SkillsSection from '@/components/resume/SkillsSection';
+import ProjectsSection from '@/components/resume/ProjectsSection';
 import { SITE_CONFIG } from '@/lib/constants';
 
 export default async function ResumeView() {
@@ -87,6 +88,17 @@ export default async function ResumeView() {
                     <Linkedin size={20} />
                   </a>
                 )}
+                {SITE_CONFIG.social.github && (
+                  <a
+                    href={SITE_CONFIG.social.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                    aria-label="GitHub"
+                  >
+                    <Github size={20} />
+                  </a>
+                )}
                 {SITE_CONFIG.social.email && (
                   <a
                     href={`mailto:${SITE_CONFIG.social.email}`}
@@ -124,18 +136,17 @@ export default async function ResumeView() {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0">
           {resumeItems.length === 0 ? (
-            <div className="text-center py-12 bg-gray-50 rounded-xl">
+            <div className="text-center py-12 mb-12 bg-gray-50 rounded-xl">
               <p className="text-gray-600">Resume content coming soon.</p>
             </div>
           ) : (
-            <>
-              <ResumeSection items={resumeItems} type="work" />
-              <ResumeSection items={resumeItems} type="education" />
-            </>
+            <ResumeSection items={resumeItems} type="work" />
           )}
-        </main>
+          <ProjectsSection />
+          <ResumeSection items={resumeItems} type="education" />
+        </div>
       </div>
     </div>
   );
