@@ -99,7 +99,14 @@ export interface SkillEntry {
   sys: { id: string };
   fields: {
     name: string;
-    category: 'Languages' | 'Frameworks' | 'Tools' | 'Software';
+    category:
+      | 'Sensor & AR/VR Validation'
+      | 'Lab Environments'
+      | 'Automation & CI'
+      | 'QA Methodology'
+      | 'Creative Tools'
+      | 'Platforms & Code'
+      | 'Tools';
   };
 }
 
