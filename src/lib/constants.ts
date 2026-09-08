@@ -28,8 +28,11 @@ export const BLOG_TAGS = ['thoughts', 'stories', 'ideas', 'projects', 'tech'] as
 export const POSTS_PER_PAGE = 10;
 
 export const SKILL_COLORS: Record<string, string> = {
-  Languages: 'bg-blue-100 text-blue-800',
-  Frameworks: 'bg-green-100 text-green-800',
+  'Sensor & AR/VR Validation': 'bg-indigo-100 text-indigo-800',
+  'Lab Environments': 'bg-teal-100 text-teal-800',
+  'Automation & CI': 'bg-green-100 text-green-800',
+  'QA Methodology': 'bg-blue-100 text-blue-800',
+  'Creative Tools': 'bg-rose-100 text-rose-800',
+  'Platforms & Code': 'bg-orange-100 text-orange-800',
   Tools: 'bg-purple-100 text-purple-800',
-  Software: 'bg-orange-100 text-orange-800',
 };

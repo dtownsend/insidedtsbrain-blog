@@ -66,7 +66,12 @@ test('resume bullets do not expose a bullet glyph to assistive tech', async ({ p
   // Chrome puts CSS ::before text into the accessibility tree, so a
   // before:content-['•'] bullet gets announced on top of the native list
   // semantics. Playwright's aria snapshot reflects that generated content.
-  const firstList = page.getByRole('list').first();
+  // The sidebar now holds skill lists too, so take the first list under
+  // the Professional Experience heading.
+  const firstList = page
+    .locator('section', { has: page.getByRole('heading', { name: 'Professional Experience' }) })
+    .getByRole('list')
+    .first();
   await expect(firstList).toBeVisible();
   const snapshot = await firstList.ariaSnapshot();
   expect(snapshot).not.toContain('•');
