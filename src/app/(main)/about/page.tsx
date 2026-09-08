@@ -44,6 +44,7 @@ export default async function AboutPage() {
                 src={profilePictureUrl}
                 alt={about?.fields?.headline || SITE_CONFIG.author}
                 fill
+                sizes="128px"
                 className="object-cover"
               />
             ) : (

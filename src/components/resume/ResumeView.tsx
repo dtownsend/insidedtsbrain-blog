@@ -49,6 +49,7 @@ export default async function ResumeView() {
                       src={profilePictureUrl}
                       alt={profile?.fields?.name || SITE_CONFIG.author}
                       fill
+                      sizes="128px"
                       className="object-cover"
                     />
                   ) : (

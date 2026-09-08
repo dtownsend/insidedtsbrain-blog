@@ -49,6 +49,7 @@ export default function ResumeSection({ items, type }: ResumeSectionProps) {
                         src={logoUrl}
                         alt={item.fields.companyName}
                         fill
+                        sizes="64px"
                         className="object-contain p-2"
                       />
                     </div>
